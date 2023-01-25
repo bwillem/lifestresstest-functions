@@ -17,7 +17,7 @@
     "fix": "gts fix",
     "posttest": "npm run lint",
     "start": "npm run compile && functions-framework --source=build/src/ --target=generatePdf",
-    "deploy": "npm run compile && gcloud functions deploy generate-pdf --gen2 --trigger-http --runtime=nodejs16 --entry-point=generatePdf --memory=1gb --allow-unauthenticated",
+    "deploy": "npm run compile && gcloud functions deploy generate-pdf --gen2 --trigger-http --runtime=nodejs16 --entry-point=generatePdf --memory=2gb --timeout=300s --allow-unauthenticated",
     "postinstall": "node node_modules/puppeteer/install.js"
   },
   "devDependencies": {

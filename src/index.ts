@@ -5,15 +5,21 @@ import storageService from './storage';
 const generatePdf: HttpFunction = async (req, res) => {
   if (req.method !== 'POST') throw new Error(`${req.method} not supported`)
 
-  console.debug(req.query)
+  console.debug('userId: ', req.query.userId)
 
   const { userId } = req.query
   if (!userId) throw new Error('Missing userId')
 
   const browser = await puppeteer.launch({ headless: true });
   const page = await browser.newPage();
+  const url = `https://lifestresstest.com/stress-test-report?dd=${userId}`
 
-  await page.goto(`https://lifestresstest.com/stress-test-report?dd=${userId}`, { waitUntil: 'networkidle0' });
+  // for testing
+  await page.goto('https://lifestresstest.com/', { waitUntil: 'networkidle0' })
+
+  console.log('navigating to ', url)
+
+  await page.goto(url, { waitUntil: 'networkidle0' });
   const file = await page.pdf({ format: 'A4' });
 
   console.debug('file created')
