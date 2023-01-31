@@ -15,10 +15,12 @@ const upload = async ({ filename, file }: UploadOpts) => {
 
     try {
         await _file.save(file)
+        console.debug('file uploaded successfully')
     } catch (e) {
         console.error(e)
         throw new Error('Saving file to GCS failed')
     }
+
 }
 
 const storageService = {

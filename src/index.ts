@@ -14,18 +14,15 @@ const generatePdf: HttpFunction = async (req, res) => {
   const page = await browser.newPage();
   const url = `https://lifestresstest.com/stress-test-report?dd=${userId}`
 
-  // for testing
-  await page.goto('https://lifestresstest.com/', { waitUntil: 'networkidle0' })
-
   console.log('navigating to ', url)
 
   await page.goto(url, { waitUntil: 'networkidle0' });
-  const file = await page.pdf({ format: 'A4' });
+  const file = await page.pdf();
 
   console.debug('file created')
 
   await browser.close();
-  await storageService.upload({ filename: `${userId}-report`, file })
+  await storageService.upload({ filename: `${userId}-report.pdf`, file })
 
   res.sendStatus(200)
 }
