@@ -5,24 +5,24 @@ import storageService from './storage';
 const generatePdf: HttpFunction = async (req, res) => {
   if (req.method !== 'POST') throw new Error(`${req.method} not supported`)
 
-  console.debug('reportId: ', req.query.reportId)
+  console.debug('survey_id: ', req.query.survey_id)
 
-  const { reportId } = req.query
-  if (!reportId) throw new Error('Missing reportId')
+  const { survey_id } = req.query
+  if (!survey_id) throw new Error('Missing survey_id')
 
   const browser = await puppeteer.launch({ headless: true });
-  const page = await browser.newPage();
-  const url = `https://lifestresstest.com/stress-test-report?dd=${reportId}`
+  const page = await browser.newPage()
+  const url = `https://lifestresstest.com/stress-test-report?dd=${survey_id}`
 
   console.log('navigating to ', url)
 
-  await page.goto(url, { waitUntil: 'networkidle0' });
-  const file = await page.pdf();
+  await page.goto(url, { waitUntil: 'networkidle0' })
+  const file = await page.pdf()
 
   console.debug('file created')
 
   await browser.close();
-  await storageService.upload({ filename: `${reportId}-report.pdf`, file })
+  await storageService.upload({ filename: `${survey_id}-report.pdf`, file })
 
   res.sendStatus(200)
 }
